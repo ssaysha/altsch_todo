@@ -4,12 +4,12 @@ import react from "@vitejs/plugin-react";
 export default defineConfig({
   plugins: [react()],
   server: {
-    open: true,
+    open: true, 
   },
   build: {
     rollupOptions: {
       input: "/index.html",
     },
   },
-  base: "/",
+  base: "/altsch_todo/", 
 });
