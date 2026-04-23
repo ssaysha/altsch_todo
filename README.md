@@ -112,3 +112,5 @@ Offline support
 
 Aishatu Salisu Suleiman
 ALT/SOE/025/3520
+
+Typescript migration in progress 
