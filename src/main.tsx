@@ -5,13 +5,18 @@ import ErrorBoundary from "./components/ErrorBoundary";
 import AppRoutes from "./routes/AppRoutes";
 import Providers from "./Providers";
 
+const rootElement = document.getElementById("root");
 
-ReactDOM.createRoot(document.getElementById("root")).render(
+if (!rootElement) {
+  throw new Error("Root element not found");
+}
+
+ReactDOM.createRoot(rootElement).render(
   <React.StrictMode>
-      <Providers>
-        <ErrorBoundary>
-          <AppRoutes />
-        </ErrorBoundary>
-      </Providers>
+    <Providers>
+      <ErrorBoundary>
+        <AppRoutes />
+      </ErrorBoundary>
+    </Providers>
   </React.StrictMode>
 );

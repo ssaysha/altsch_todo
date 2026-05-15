@@ -1,6 +1,13 @@
 import { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
 
+type Todo = {
+  id: number;
+  title: string;
+  details: string;
+  completed: boolean;
+};
+
 function Home() {
   // Page title
   useEffect(() => {
@@ -8,34 +15,41 @@ function Home() {
   }, []);
 
   // 50 Tasks
-  const initialTodos = Array.from({ length: 50 }, (_, i) => ({
+  const initialTodos: Todo[] = Array.from({ length: 50 }, (_, i) => ({
     id: i + 1,
     title: `Task ${i + 1}`,
     details: `Details for Task ${i + 1}`,
     completed: i % 3 === 0,
   }));
 
-  const [todos, setTodos] = useState(initialTodos);
-  const [title, setTitle] = useState("");
-  const [details, setDetails] = useState("");
-  const [page, setPage] = useState(1);
+  const [todos, setTodos] = useState<Todo[]>(initialTodos);
+  const [title, setTitle] = useState<string>("");
+  const [details, setDetails] = useState<string>("");
+  const [page, setPage] = useState<number>(1);
   const tasksPerPage = 10;
 
   // Search & Filter
-  const [searchTerm, setSearchTerm] = useState("");
-  const [filter, setFilter] = useState("all");
+  const [searchTerm, setSearchTerm] = useState<string>("");
+  const [filter, setFilter] = useState<"all" | "completed" | "incomplete">("all");
 
   // Add Task
   const addTask = () => {
     if (!title.trim()) return;
-    const newTask = { id: Date.now(), title, details, completed: false };
+
+    const newTask: Todo = {
+      id: Date.now(),
+      title,
+      details,
+      completed: false,
+    };
+
     setTodos([newTask, ...todos]);
     setTitle("");
     setDetails("");
   };
 
   // Toggle Task
-  const toggleCompleted = (id) => {
+  const toggleCompleted = (id: number) => {
     setTodos(
       todos.map((todo) =>
         todo.id === id ? { ...todo, completed: !todo.completed } : todo
@@ -44,7 +58,7 @@ function Home() {
   };
 
   // Delete Task
-  const deleteTask = (id) => {
+  const deleteTask = (id: number) => {
     setTodos(todos.filter((todo) => todo.id !== id));
   };
 
@@ -84,12 +98,14 @@ function Home() {
         onChange={(e) => setTitle(e.target.value)}
         className="w-full p-2 border rounded mb-2"
       />
+
       <textarea
         placeholder="Task details"
         value={details}
         onChange={(e) => setDetails(e.target.value)}
         className="w-full p-2 border rounded mb-2"
       />
+
       <div className="mb-4 flex gap-2">
         <button
           onClick={addTask}
@@ -97,6 +113,7 @@ function Home() {
         >
           Add Task
         </button>
+
         <button
           onClick={() => {
             setTitle("");
@@ -117,6 +134,7 @@ function Home() {
           onChange={(e) => setSearchTerm(e.target.value)}
           className="flex-1 p-2 border rounded"
         />
+
         <div className="flex gap-2 mt-2 sm:mt-0">
           <button
             onClick={() => setFilter("all")}
@@ -126,6 +144,7 @@ function Home() {
           >
             All
           </button>
+
           <button
             onClick={() => setFilter("completed")}
             className={`px-3 py-1 rounded ${
@@ -134,6 +153,7 @@ function Home() {
           >
             Completed
           </button>
+
           <button
             onClick={() => setFilter("incomplete")}
             className={`px-3 py-1 rounded ${
@@ -160,6 +180,7 @@ function Home() {
                 <div>{todo.details}</div>
                 <div>{todo.completed ? "Completed" : "Incomplete"}</div>
               </div>
+
               <div className="flex gap-2">
                 <Link
                   to={`/todos/${todo.id}`}
@@ -167,12 +188,14 @@ function Home() {
                 >
                   Details
                 </Link>
+
                 <button
                   onClick={() => toggleCompleted(todo.id)}
                   className="px-2 py-1 bg-yellow-500 text-white rounded"
                 >
                   Toggle
                 </button>
+
                 <button
                   onClick={() => {
                     if (
@@ -200,9 +223,11 @@ function Home() {
         >
           Prev
         </button>
+
         <span>
           Page {page} of {totalPages}
         </span>
+
         <button
           disabled={page === totalPages}
           onClick={() => setPage(page + 1)}
